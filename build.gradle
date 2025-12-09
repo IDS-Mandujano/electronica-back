@@ -1,0 +1,74 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = 'com.electronica'
+version = '1.0-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Javalin 6.3.0
+    implementation 'io.javalin:javalin:6.3.0'
+
+    // SLF4J (Logging)
+    implementation 'org.slf4j:slf4j-simple:2.0.16'
+
+    // JSON
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.1'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.1'
+
+    // Database MySQL
+    implementation 'com.mysql:mysql-connector-j:9.1.0'
+
+    // HikariCP
+    implementation 'com.zaxxer:HikariCP:6.2.1'
+
+    // BCrypt
+    implementation 'org.mindrot:jbcrypt:0.4'
+
+    // JWT
+    implementation 'com.auth0:java-jwt:4.4.0'
+
+    // Email (javax.mail - Gmail)
+    implementation 'com.sun.mail:javax.mail:1.6.2'
+
+    // Validation
+    implementation 'javax.validation:validation-api:2.0.1.Final'
+    implementation 'org.hibernate.validator:hibernate-validator:7.0.5.Final'
+    implementation 'org.glassfish:jakarta.el:4.0.2'
+
+    // Dotenv
+    implementation 'io.github.cdimascio:dotenv-java:3.0.0'
+
+    // Testing
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+    testImplementation 'org.mockito:mockito-core:5.5.0'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs += ['-Xlint:deprecation', '-Xlint:unchecked']
+}
+
+test {
+    useJUnitPlatform()
+}
+
+application {
+    mainClass = 'com.electronica.Main'
+}
+
+tasks.withType(JavaExec).configureEach {
+    jvmArgs = ['--add-opens', 'java.base/java.lang=ALL-UNNAMED']
+}
